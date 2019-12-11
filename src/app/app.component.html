@@ -1,8 +1,32 @@
+<script type="text/javascript" src="../assets/core.js"></script>
+
 
 <style>
 
   html {
     font-family: Arial,Helvetica Neue,Helvetica,sans-serif; 
+  }
+
+  .header {
+    font-size: 2rem;
+    margin-left: 1rem;
+    width: calc( 100% - 1rem );
+  }
+
+  .subHeader {
+    font-size: 1.5rem;
+    margin-left: 2rem;
+    width: calc( 100% - 2rem );
+  }
+
+  .text {
+    font-size: 1rem;
+    margin-left: 3rem;
+    width: calc( 100% - 3rem );
+  }
+
+  .header, .subHeader, .text {
+    margin-bottom: .75rem;
   }
 
   .contentContainer {
@@ -50,10 +74,53 @@
     }
 
       .mainContentContainer {
-        height: calc( 100% - 1rem );
-        width: calc( 100% - 1rem );
-        padding: .5rem;
+        height: calc( 100% );
+        width: calc( 100% );
+        font-size: 0px;
       }
+
+        .mainContentContainer > div {
+          display: inline-block;
+          vertical-align: top;
+          font-size: 1rem;
+        }
+
+        .navigationContainer {
+          width: 10rem;
+          height: 100%;
+        }
+
+          .navigationContainer > div {
+            width: 100%;
+            height: 2rem;
+            display: block;
+            line-height: 2rem;
+            transition: background-color 500ms linear;
+            text-indent: .5rem;
+          }
+
+          .navigationContainer > div:hover {
+            background-color: rgb(160, 160, 160);
+            cursor: pointer;
+            transition: background-color 500ms linear;
+          }
+
+        .innerContentContainer {
+          width: calc( 100% - 11rem );
+          height: calc( 100% - 1rem );
+          padding: .5rem;
+          overflow: auto;
+        }
+
+        .innerContentContainer > div {
+          width: 100%;
+          display: block;
+          margin-top: 1rem;
+        }
+
+        .innerContentContainer > div:first-child {
+          margin-top: 0rem;
+        }
 
     .footerContentContainer {
       height: 3rem;
@@ -98,7 +165,127 @@
 
   <div class="mainContentOuterContainer">
     <div class="mainContentContainer">
-      CV goes here
+      <div class="navigationContainer">
+        <div class="introductionNavItem">
+          Intro
+        </div>
+        <div class="goalsAndDreamsNavItem">
+          Dreams
+        </div>
+        <div class="workHistoryNavItem">
+          History
+        </div>
+        <div class="futurePlansNavItem">
+          Plans
+        </div>
+      </div>
+      <div class="innerContentContainer">
+          <div class="introductionContainer">
+            <div class="header">
+              Introduction
+            </div>
+            <div class="subHeader">
+              Who am I?
+            </div>
+            <div class="text">
+              I am Brian.
+            </div>
+            <div class="subHeader">
+              What do I do?
+            </div>
+            <div class="text">
+              I create applications.
+            </div>
+            <div class="subHeader">
+              What matters to me?
+            </div>
+            <div class="text">
+              Work hard, play hard.
+            </div>
+            <div class="subHeader">
+              How can I help you?
+            </div>
+            <div class="text">
+              If you have a problem, I can solve it.
+            </div>
+          </div>
+          <div class="goalsAndDreamsContainer">
+            <div class="header">
+              Dreams
+            </div>
+            <div class="subHeader">
+              What work is worth waking up at 3 in the morning for?
+            </div>
+            <div class="text">
+              Work worth doing.
+            </div>
+            <div class="subHeader">
+              What is my 30 year goal?
+            </div>
+            <div class="text">
+              Castle orphanage.  PHDs in Education (expertise in early childhood development) and business administration
+            </div>
+            <div class="subHeader">
+              What is my 10 year goal?
+            </div>
+            <div class="text">
+              Achieve a masters in education (with expertise in early childhood development) as well as business administration
+            </div>
+            <div class="subHeader">
+              What is my 5 year goal?
+            </div>
+            <div class="text">
+              Study for an offline MBA and work on developing my managerial / administrative experience.
+            </div>
+          </div>
+          <div class="workHistoryContainer">
+            <div class="header">
+              The Road Thus Far
+            </div>
+            <div class="subHeader">
+              What have I been doing professionally for the last five years?
+            </div>
+            <div class="text">
+              Work worth doing.
+            </div>
+            <div class="subHeader">
+              What do I do in my spare time?
+            </div>
+            <div class="text">
+              Father.  Play with new technology.  Work on a variety of projects for fun and personal education.
+            </div>
+            <div class="subHeader">
+              What were my high school and college experiences like?
+            </div>
+            <div class="text">
+              High school opened so many doors for me.  College was a waste of my time (my fault).
+            </div>
+          </div>
+          <div class="futurePlansContainer">
+            <div class="header">
+              The Way Forward
+            </div>
+            <div class="subHeader">
+              What do I plan to do professionally for the next five years?
+            </div>
+            <div class="text">
+              Work worth doing.
+            </div>
+            <div class="subHeader">
+              What will I be doing in my spare time?
+            </div>
+            <div class="text">
+              Father.  Setup my offline MBA and begin the coursework.  Invest in the future.
+            </div>
+            <div class="subHeader">
+              How can you help me?
+            </div>
+            <div class="text">
+              The most helpful things in my life have been the coaches I have met along the way that have helped me pave my path.  
+              I have an open door and am willing to hear out any suggestions and welcome any advice you might offer.
+            </div>
+          </div>
+      </div>
     </div>
   </div>
 
