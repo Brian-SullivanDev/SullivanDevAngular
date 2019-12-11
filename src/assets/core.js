@@ -97,6 +97,17 @@ _.prototype.html = function (html) {
 
 };
 
+// adds an event listener to the element.  The handler element is what gets attached (as is)
+_.prototype.ready = function (handler) {
+    
+    this.each(function () {
+
+        this.addEventListener("DOMContentLoaded", handler, false);
+
+    });
+
+};
+
 // returns the width of the element in scope.  Sets it as well if the newWidth param is provided
 _.prototype.width = function (newWidth) {
     
