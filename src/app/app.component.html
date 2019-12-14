@@ -24,10 +24,12 @@
     font-size: 1rem;
     margin-left: 3rem;
     width: calc( 100% - 3rem );
+    white-space: pre-line;
+    margin-bottom: 2rem;
   }
 
-  .header, .subHeader, .text {
-    margin-bottom: .75rem;
+  .header, .subHeader {
+    margin-bottom: 1rem;
   }
 
   .spacer {
@@ -125,14 +127,18 @@
             height: 2rem;
             display: block;
             line-height: 2rem;
-            transition: background-color 500ms linear;
+            /*transition: background-color 500ms linear;*/
             text-indent: .5rem;
           }
 
           .navigationContainer .textOverlaysContainer > div:hover {
-            background-color: rgba(160, 160, 160, 0.40);
+            /*background-color: rgba(160, 160, 160, 0.40);*/
             cursor: pointer;
-            transition: background-color 500ms linear;
+            /*transition: background-color 500ms linear;*/
+          }
+
+          .scrollerRegion {
+            background-color: rgba(185, 185, 185, 0.50);
           }
 
         .innerContentContainer {
@@ -237,19 +243,23 @@
             What is my 30 year goal?
           </div>
           <div class="text">
-            Castle orphanage.  PHDs in Education (expertise in early childhood development) and business administration
+            Castle orphanage.  
+            PHDs in Education (expertise in early childhood development) and business administration
           </div>
           <div class="subHeader">
             What is my 10 year goal?
           </div>
           <div class="text">
-            Achieve a masters in education (with expertise in early childhood development) as well as business administration
+            Achieve a masters in education 
+            (with expertise in early childhood development) 
+            as well as business administration
           </div>
           <div class="subHeader">
             What is my 5 year goal?
           </div>
           <div class="text">
-            Study for an offline MBA and work on developing my managerial / administrative experience.
+            Study for an offline MBA
+            work on developing my managerial / administrative experience.
           </div>
           <div class="spacer">
             
@@ -269,13 +279,16 @@
             What do I do in my spare time?
           </div>
           <div class="text">
-            Father.  Play with new technology.  Work on a variety of projects for fun and personal education.
+            Father.  
+            Play with new technology.  
+            Work on a variety of projects for fun and personal education.
           </div>
           <div class="subHeader">
             What were my high school and college experiences like?
           </div>
           <div class="text">
-            High school opened so many doors for me.  College was a waste of my time (my fault).
+            High school opened so many doors for me.  
+            College was a waste of my time (my fault).
           </div>
           <div class="spacer">
             
@@ -295,14 +308,18 @@
             What will I be doing in my spare time?
           </div>
           <div class="text">
-            Father.  Setup my offline MBA and begin the coursework.  Invest in the future.
+            Father.  
+            Setup my offline MBA and begin the coursework.  
+            Invest in the future.
           </div>
           <div class="subHeader">
             How can you help me?
           </div>
           <div class="text">
-            The most helpful things in my life have been the coaches I have met along the way that have helped me pave my path.  
-            I have an open door and am willing to hear out any suggestions and welcome any advice you might offer.
+            The most helpful things in my life have been the coaches I have met along the way 
+            that have helped me pave my path.  
+            I have an open door and am willing to hear out any suggestions 
+            and welcome any advice you might offer.
           </div>
         </div>
       </div>
@@ -326,6 +343,9 @@
           <div class="futurePlansNavItem">
             Plans
           </div>
+        </div>
+        <div class="scrollerOverlayContainer scrollControl">
+          <div class="scrollerRegion"></div>
         </div>
       </div>
     </div>
