@@ -1,10 +1,64 @@
 $(document).ready(function() {
 
-    test();
+    performScrollerHandling();
 
 });
 
-let test = function () {
+let performScrollerHandling = function () {
+
+    setupScrollBindings();
+    resizeScrollerControl();
+    configureScrollEvents();
+
+};
+
+let setupScrollBindings = function () {
+
+    let scrollerBlock = $(".scrollerRegion");
+
+    let scrollDragStart = function () {
+
+        console.log("hi");
+
+    };
+
+    scrollerBlock[0].ondragstart = scrollDragStart;
+
+};
+
+configureScrollEvents = function () {
+
+    let dragstart = function (e) {
+
+        e.preventDefault();
+        let dragTarget = $(e.target);
+
+        let mouseX = e.clientX;
+        let mouseY = e.clientY;
+
+        let colPosition = dragTarget[0].getBoundingClientRect();
+
+        xOffset = colPosition.left - mouseX;
+        yOffset = colPosition.top - mouseY;
+        
+        currentDragColumn = setColumnDragger(uniqueID, dragTarget);
+        createPlaceholderForColumnElement(uniqueID, dragTarget);
+
+        updateDragColumnPosition(mouseX, mouseY);
+        
+        log("dragstart");
+
+        $(document).bind("mousemove", dragmouse);
+        $(document).bind("mouseup", mouseup);
+
+    };
+
+    
+
+};
+
+// update the scroll display and events tied to the 
+let resizeScrollerControl = function () {
 
     let scrollContainerHeight = $(".navigationContainer").height();
 
