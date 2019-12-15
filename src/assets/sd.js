@@ -1,8 +1,71 @@
 $(document).ready(function() {
 
     performScrollerHandling();
+    setupPreviewElement();
 
 });
+
+let setPreviewScale = function () {
+
+    let mainContentContainer = $(".innerContentContainer");
+    
+    let previewContainer = $(".previewScrollerContainer");
+
+    let baseValue = 4.25; //determineAppropriateScale();
+
+    let containerPaddingScaling = 0.5;
+    let headerFontScaling = 2.0;
+    let headerMarginBottomScaling = 1.0;
+    let headerMarginLeftScaling = 1.0;
+    let subHeaderFontScaling = 1.5;
+    let subHeaderMarginBottomScaling = 1.0;
+    let subHeaderMarginLeftScaling = 2.0;
+    let textFontScaling = 1.0;
+    let textMarginBottomScaling = 2.0;
+    let textMarginLeftScaling = 3.0;
+    let spacerHeightScaling = 3.0;
+
+    let headers = previewContainer.find(".header");
+    let subHeaders = previewContainer.find(".subHeader");
+    let textBlocks = previewContainer.find(".text");
+    let spacers = previewContainer.find(".spacer");
+
+    let setScale = function(element, fontScale, marginBottomScale, marginLeftScale) {
+
+        element.style.fontSize = (fontScale * baseValue).toString() + "px";
+        element.style.marginBottom = (marginBottomScale * baseValue).toString() + "px";
+        element.style.marginLeft = (marginLeftScale * baseValue).toString() + "px";
+        element.style.width = "calc( 100% - " + (marginLeftScale * baseValue).toString() + " )";
+
+    };
+
+    headers.each(function() {
+        setScale(this, headerFontScaling, headerMarginBottomScaling, headerMarginLeftScaling);
+    });
+    
+    subHeaders.each(function() {
+        setScale(this, subHeaderFontScaling, subHeaderMarginBottomScaling, subHeaderMarginLeftScaling);
+    });
+    
+    textBlocks.each(function() {
+        setScale(this, textFontScaling, textMarginBottomScaling, textMarginLeftScaling);
+    });
+
+    spacers.each(function() {
+        this.style.height = (spacerHeightScaling * baseValue).toString() + "px";
+    });
+
+};
+
+let setupPreviewElement = function () {
+
+    let cloneHTML = $(".mainContentContainer > .innerContentContainer")[0].innerHTML;
+    
+    $(".previewScrollerContainer").html(cloneHTML);
+
+    setPreviewScale();
+
+};
 
 let performScrollerHandling = function () {
 
