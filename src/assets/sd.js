@@ -12,8 +12,8 @@ let setPreviewScale = function () {
     let previewContainer = $(".previewScrollerContainer");
 
     let baseValue = 4.25; //determineAppropriateScale();
+    baseValue = 6;
 
-    let containerPaddingScaling = 0.5;
     let headerFontScaling = 2.0;
     let headerMarginBottomScaling = 1.0;
     let headerMarginLeftScaling = 1.0;
