@@ -35,7 +35,7 @@ let setPreviewScale = function () {
         element.style.fontSize = (fontScale * baseValue).toString() + "px";
         element.style.marginBottom = (marginBottomScale * baseValue).toString() + "px";
         element.style.marginLeft = (marginLeftScale * baseValue).toString() + "px";
-        element.style.width = "calc( 100% - " + (marginLeftScale * baseValue).toString() + " )";
+        element.style.width = "calc( 100% - " + (marginLeftScale * baseValue).toString() + "px )";
 
     };
 
@@ -79,44 +79,94 @@ let setupScrollBindings = function () {
 
     let scrollerBlock = $(".scrollerRegion");
 
-    let scrollDragStart = function () {
+    let scrollDragBinder = function (e) {
 
-        console.log("hi");
+        if ( window.scrollDragStart !== undefined ) {
+            window.scrollDragStart(e);
+        }
 
     };
 
-    scrollerBlock[0].ondragstart = scrollDragStart;
+    scrollerBlock[0].ondragstart = scrollDragBinder;
+
+};
+
+let scrollPageByScroller = function (scrollPercentage) {
+
+    let contentContainer = $(".innerContentContainer");
+
+    let contentScrollableHeight = contentContainer[0].scrollHeight - contentContainer.height();
+
+    let setScrollTop = contentScrollableHeight * scrollPercentage;
+
+    contentContainer[0].scrollTop = setScrollTop;
 
 };
 
 configureScrollEvents = function () {
 
+    let yOffset = 0;
+
+    let scrollerContainer = $(".scrollerOverlayContainer");
+    let scrollerElement = scrollerContainer.find(".scrollerRegion");
+
+    let containerHeight = scrollerContainer.height();
+    let scrollerHeight = scrollerElement.height();
+
+    let maxHeight = containerHeight - scrollerHeight;
+
+    let updateDragPosition = function (y) {
+
+        if ( (y + yOffset) < 0 ) {
+            y = -yOffset;
+        }else if ( (y + yOffset) > maxHeight ) {
+            y = maxHeight - yOffset;
+        }
+        scrollerElement[0].style.top = (y + yOffset).toString() + "px";
+
+        let scrollPercentage = (y + yOffset) / maxHeight;
+
+        scrollPageByScroller(scrollPercentage);
+    
+    };
+
+    let dragmouse = function (e) {
+
+        let mouseY = e.clientY;
+
+        updateDragPosition(mouseY);
+
+    }
+
+    let mouseup = function (e) {
+
+        $(document)[0].removeEventListener("mousemove", dragmouse, false);
+        $(document)[0].removeEventListener("mouseup", mouseup, false);
+
+    }
+
     let dragstart = function (e) {
 
         e.preventDefault();
         let dragTarget = $(e.target);
+        console.log(dragTarget);
 
-        let mouseX = e.clientX;
         let mouseY = e.clientY;
 
         let colPosition = dragTarget[0].getBoundingClientRect();
 
-        xOffset = colPosition.left - mouseX;
         yOffset = colPosition.top - mouseY;
-        
-        currentDragColumn = setColumnDragger(uniqueID, dragTarget);
-        createPlaceholderForColumnElement(uniqueID, dragTarget);
 
-        updateDragColumnPosition(mouseX, mouseY);
+        //updateDragPosition(mouseX, mouseY);
         
-        log("dragstart");
+        console.log("dragstart");
 
-        $(document).bind("mousemove", dragmouse);
-        $(document).bind("mouseup", mouseup);
+        $(document)[0].addEventListener("mousemove", dragmouse, false);
+        $(document)[0].addEventListener("mouseup", mouseup, false);
 
     };
 
-    
+    window.scrollDragStart = dragstart;
 
 };
 
