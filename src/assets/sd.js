@@ -5,14 +5,37 @@ $(document).ready(function() {
 
 });
 
-let setPreviewScale = function () {
+let determineAppropriateScale = function () {
 
     let mainContentContainer = $(".innerContentContainer");
+
+    let mainContentHeight = mainContentContainer.find(".introductionContainer").height() + 
+    mainContentContainer.find(".goalsAndDreamsContainer").height() + 
+    mainContentContainer.find(".workHistoryContainer").height() + 
+    mainContentContainer.find(".futurePlansContainer").height();
+
+    let scrollerContainer = $(".scrollerOverlayContainer");
+
+    let scrollerHeight = scrollerContainer.height();
+
+    let heightScale = scrollerHeight / mainContentHeight;
+
+    return heightScale * 16;
+
+};
+
+let setPreviewScale = function () {
     
     let previewContainer = $(".previewScrollerContainer");
 
-    let baseValue = 4.25; //determineAppropriateScale();
-    baseValue = 6;
+    let baseValue = determineAppropriateScale();
+
+    let mainWidth = $(".innerContentContainer").width();
+
+    let widthScale = mainWidth / 16.0;
+
+    $(".scrollerOverlayContainer")[0].style.width = (baseValue * widthScale).toString() + "px";
+    $(".previewScrollerContainer")[0].style.width = (baseValue * widthScale).toString() + "px";
 
     let headerFontScaling = 2.0;
     let headerMarginBottomScaling = 1.0;
@@ -103,7 +126,7 @@ let scrollPageByScroller = function (scrollPercentage) {
 
 };
 
-configureScrollEvents = function () {
+let configureScrollEvents = function () {
 
     let yOffset = 0;
 
