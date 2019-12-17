@@ -37,6 +37,14 @@ let setPreviewScale = function () {
     $(".scrollerOverlayContainer")[0].style.width = (baseValue * widthScale).toString() + "px";
     $(".previewScrollerContainer")[0].style.width = (baseValue * widthScale).toString() + "px";
 
+    let containerPaddingScaling = 0.5;
+
+    let scrollerWrapper = $(".previewScrollerOuterContainer");
+
+    scrollerWrapper[0].style.padding = (baseValue * containerPaddingScaling).toString() + "px";
+    scrollerWrapper[0].style.width = "calc( 100% - " + (baseValue * containerPaddingScaling * 2).toString() + "px)";
+    scrollerWrapper[0].style.height = "calc( 100% - " + (baseValue * containerPaddingScaling * 2).toString() + "px)";
+
     let headerFontScaling = 2.0;
     let headerMarginBottomScaling = 1.0;
     let headerMarginLeftScaling = 1.0;
