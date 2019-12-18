@@ -103,6 +103,123 @@ let performScrollerHandling = function () {
     setupScrollBindings();
     resizeScrollerControl();
     configureScrollEvents();
+    bindScrollEvents();
+
+};
+
+let bindScrollEvents = function () {
+
+    let mouseScroll = function (e) {
+
+        let delta = e.wheelDelta || -e.detail;
+
+        let direction = "up"
+
+        if (delta < 0) {
+            direction = "down";
+        }
+
+        scroll(direction);
+
+    };
+
+    $(document)[0].addEventListener("mousewheel DOMMouseScroll", mouseScroll);
+
+    let lastTouchY = 0;
+
+    let touchStart = function (e) {
+
+        e.stopPropagation();
+        
+        let touches = e.touches;
+        if (touches.length === 1) {
+
+            let touch = touches[0];
+
+            lastTouchY = touch.clientY;
+
+            let touchMove = function(innerEvent) {
+            
+                innerEvent.stopPropagation();
+                
+                let innerTouches = innerEvent.touches;
+                if (innerTouches.length === 1) {
+        
+                    let direction = "down"
+        
+                    let innerTouch = innerTouches[0];
+                    if (innerTouch.clientY >= lastTouchY) {
+                        direction = "up";
+                    }
+        
+                    scroll(direction);
+        
+                    //lastTouchY = innerTouch.clientY;
+        
+                }
+                else{
+                    console.log("multi-touch detected on doc touch move.  Currently, no handling implemented for this.");
+                }
+                    
+            };
+        
+            e.target.addEventListener("touchmove", touchMove);
+
+            let touchEnd = function (innerEvent) {
+
+                innerEvent.target.removeEventListener("touchmove", touchMove);
+                innerEvent.target.removeEventListener("touchend", touchEnd);
+
+            };
+        
+            e.target.addEventListener("touchend", touchEnd);
+
+        }
+
+    };
+
+    $(document)[0].addEventListener("touchstart", touchStart);
+
+    
+
+};
+
+let scroll = function (direction, weight) {
+
+    let direction = direction || "down";
+    let weight = weight || 1;
+
+    if (direction !== "down") {
+        weight = weight * -1;
+    }
+
+    let deltaY = weight * 3;
+
+    scrollContent(deltaY);
+
+    updateScrollerPositionToContentScroll();
+
+};
+
+let scrollContent = function (deltaY) {
+
+    let contentContainer = $(".innerContentContainer");
+
+    let currentScrollPosition = contentContainer[0].scrollTop;
+    let newScrollPosition = currentScrollPosition - deltaY;
+
+    if ( newScrollPosition < 0 ) {
+        newScrollPosition = 0;
+    }
+    else if ( newScrollPosition > contentContainer.scrollHeight ) {
+        newScrollPosition = scrollHeight;
+    }
+
+};
+
+let updateScrollerPositionToContentScroll = function () {
+
+
 
 };
 
