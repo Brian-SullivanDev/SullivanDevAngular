@@ -109,6 +109,14 @@ let performScrollerHandling = function () {
 
 let bindScrollEvents = function () {
 
+    let overrideEvent = function (e) {
+        if ( e.which === 2 ) {
+            e.preventDefault();
+        }
+    };
+
+    $(document)[0].addEventListener("mousedown", overrideEvent);
+
     let mouseScroll = function (e) {
 
         let delta = e.wheelDelta || -e.detail;
@@ -120,8 +128,6 @@ let bindScrollEvents = function () {
         }
 
         scroll(direction, 4);
-
-
 
     };
 
