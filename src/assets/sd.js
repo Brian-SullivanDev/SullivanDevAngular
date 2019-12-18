@@ -34,8 +34,8 @@ let setPreviewScale = function () {
 
     let widthScale = mainWidth / 16.0;
 
-    $(".scrollerOverlayContainer")[0].style.width = (baseValue * widthScale).toString() + "px";
-    $(".previewScrollerContainer")[0].style.width = (baseValue * widthScale).toString() + "px";
+    $(".scrollerOverlayContainer")[0].style.minWidth = (baseValue * widthScale).toString() + "px";
+    $(".previewScrollerContainer")[0].style.minWidth = (baseValue * widthScale).toString() + "px";
 
     let containerPaddingScaling = 0.5;
 
