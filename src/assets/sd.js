@@ -445,7 +445,7 @@ let resizeScrollerControl = function () {
 
     }
 
-    let scrollerHeight = scrollContainerHeight * scrollerHeightWeight;
+    let scrollerHeight = (scrollContainerHeight * scrollerHeightWeight).toString() + "px";
 
     scroller.height(scrollerHeight);
 
