@@ -119,13 +119,26 @@ let bindScrollEvents = function () {
             direction = "down";
         }
 
-        scroll(direction);
+        scroll(direction, 4);
+
+
 
     };
 
-    $(document)[0].addEventListener("mousewheel DOMMouseScroll", mouseScroll);
+    $(document)[0].addEventListener("mousewheel", mouseScroll);
+    $(document)[0].addEventListener("DOMMouseScroll", mouseScroll);
 
     let lastTouchY = 0;
+    let lastDirection = "up";
+    let scrollInterval = null;
+
+    let scrollerContainer = $(".scrollerOverlayContainer");
+    let scrollerElement = scrollerContainer.find(".scrollerRegion");
+
+    let containerHeight = scrollerContainer.height();
+    let scrollerHeight = scrollerElement.height();
+
+    let maxHeight = containerHeight - scrollerHeight;
 
     let touchStart = function (e) {
 
@@ -133,46 +146,111 @@ let bindScrollEvents = function () {
         
         let touches = e.touches;
         if (touches.length === 1) {
-
+            
             let touch = touches[0];
-
+            
             lastTouchY = touch.clientY;
 
-            let touchMove = function(innerEvent) {
-            
-                innerEvent.stopPropagation();
+            if ( $(e.target).closest(".navigationContainer").length === 0 ) {
                 
-                let innerTouches = innerEvent.touches;
-                if (innerTouches.length === 1) {
-        
-                    let direction = "down"
-        
-                    let innerTouch = innerTouches[0];
-                    if (innerTouch.clientY >= lastTouchY) {
-                        direction = "up";
-                    }
-        
-                    scroll(direction);
-        
-                    //lastTouchY = innerTouch.clientY;
-        
-                }
-                else{
-                    console.log("multi-touch detected on doc touch move.  Currently, no handling implemented for this.");
-                }
+                scrollInterval = setInterval(function () {
+    
+                    scroll(lastDirection);
+    
+                }, 10);
+                
+                let touchMove = function(innerEvent) {
+                
+                    innerEvent.stopPropagation();
                     
-            };
-        
-            e.target.addEventListener("touchmove", touchMove);
+                    let innerTouches = innerEvent.touches;
+                    if (innerTouches.length === 1) {
+            
+                        let direction = "down"
+            
+                        let innerTouch = innerTouches[0];
+                        if (innerTouch.clientY >= lastTouchY) {
+                            direction = "up";
+                        }
+            
+                        lastTouchY = innerTouch.clientY;
+    
+                        lastDirection = direction;
+            
+                        //lastTouchY = innerTouch.clientY;
+            
+                    }
+                    else{
+                        console.log("(A)multi-touch detected on doc touch move.  Currently, no handling implemented for this.");
+                    }
+                        
+                };
+            
+                e.target.addEventListener("touchmove", touchMove);
+    
+                let touchEnd = function (innerEvent) {
+    
+                    if ( scrollInterval !== null ){
+                        clearInterval(scrollInterval);
+                    }
+                    innerEvent.target.removeEventListener("touchmove", touchMove);
+                    innerEvent.target.removeEventListener("touchend", touchEnd);
+    
+                };
+            
+                e.target.addEventListener("touchend", touchEnd);
 
-            let touchEnd = function (innerEvent) {
+            }
+            else if ($(e.target).closest(".scrollerRegion").length === 1) {
+                
+                let colPosition = scrollerElement[0].getBoundingClientRect();
+                
+                let yOffset = colPosition.top - lastTouchY;
+                
+                let touchMove = function(innerEvent) {
+                
+                    innerEvent.stopPropagation();
+                    
+                    let innerTouches = innerEvent.touches;
+                    if (innerTouches.length === 1) {
 
-                innerEvent.target.removeEventListener("touchmove", touchMove);
-                innerEvent.target.removeEventListener("touchend", touchEnd);
+                        let innerTouch = innerTouches[0];
+                              
+                        let y = innerTouch.clientY;
 
-            };
-        
-            e.target.addEventListener("touchend", touchEnd);
+                        if ( (y + yOffset) < 0 ) {
+                            y = -yOffset;
+                        }else if ( (y + yOffset) > maxHeight ) {
+                            y = maxHeight - yOffset;
+                        }
+                        scrollerElement[0].style.top = (y + yOffset).toString() + "px";
+                
+                        let scrollPercentage = (y + yOffset) / maxHeight;
+                
+                        scrollPageByScroller(scrollPercentage);
+            
+                    }
+                    else{
+                        console.log("(B)multi-touch detected on doc touch move.  Currently, no handling implemented for this.");
+                    }
+                        
+                };
+            
+                e.target.addEventListener("touchmove", touchMove);
+    
+                let touchEnd = function (innerEvent) {
+    
+                    if ( scrollInterval !== null ){
+                        clearInterval(scrollInterval);
+                    }
+                    innerEvent.target.removeEventListener("touchmove", touchMove);
+                    innerEvent.target.removeEventListener("touchend", touchEnd);
+    
+                };
+            
+                e.target.addEventListener("touchend", touchEnd);
+
+            }
 
         }
 
@@ -186,14 +264,14 @@ let bindScrollEvents = function () {
 
 let scroll = function (direction, weight) {
 
-    let direction = direction || "down";
-    let weight = weight || 1;
+    direction = direction || "down";
+    weight = weight || 1;
 
-    if (direction !== "down") {
+    if (direction === "down") {
         weight = weight * -1;
     }
 
-    let deltaY = weight * 3;
+    let deltaY = weight * 10;
 
     scrollContent(deltaY);
 
@@ -215,11 +293,23 @@ let scrollContent = function (deltaY) {
         newScrollPosition = scrollHeight;
     }
 
+    contentContainer[0].scrollTop = newScrollPosition;
+
 };
 
 let updateScrollerPositionToContentScroll = function () {
 
+    let contentContainer = $(".innerContentContainer");
+    let scrollerContainer = $(".scrollerOverlayContainer");
+    let scroller = scrollerContainer.find(".scrollerRegion");
 
+    let scrollPercentage = contentContainer[0].scrollTop / (contentContainer[0].scrollHeight - contentContainer.height());
+    
+    let contentScrollableHeight = scrollerContainer.height() - scroller.height();
+
+    let setScrollTop = contentScrollableHeight * scrollPercentage;
+
+    scroller[0].style.top = setScrollTop.toString() + "px";
 
 };
 
@@ -297,17 +387,12 @@ let configureScrollEvents = function () {
 
         e.preventDefault();
         let dragTarget = $(e.target);
-        console.log(dragTarget);
 
         let mouseY = e.clientY;
 
         let colPosition = dragTarget[0].getBoundingClientRect();
 
         yOffset = colPosition.top - mouseY;
-
-        //updateDragPosition(mouseX, mouseY);
-        
-        console.log("dragstart");
 
         $(document)[0].addEventListener("mousemove", dragmouse, false);
         $(document)[0].addEventListener("mouseup", mouseup, false);
@@ -358,6 +443,8 @@ let resizeScrollerControl = function () {
 
     scroller.height(scrollerHeight);
 
+    /*
+
     let debugInitialData = {
         intro: introHeight,
         goals: goalsHeight,
@@ -376,5 +463,7 @@ let resizeScrollerControl = function () {
     console.log(scrollContainerHeight);
     console.log(debugInitialData);
     console.log(debugFinalData);
+
+    */
 
 };

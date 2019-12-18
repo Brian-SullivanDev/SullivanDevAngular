@@ -208,12 +208,19 @@ _.prototype.closest = function (parentSelector) {
 
         while ( currentNode !== null ) {
 
-            if ( currentNode.matches(parentSelector) ) {
-
-                return new _([currentNode], parentSelector);
+            try {
+                
+                if ( currentNode.matches(parentSelector) ) {
+    
+                    return new _([currentNode], parentSelector);
+    
+                }
 
             }
+            catch(ex) {
 
+            }
+            
             currentNode = currentNode.parentNode;
 
         }
